@@ -1,0 +1,41 @@
+{
+
+  "name": "patchrweb",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Patchr website",
+  "author": {
+    "name": "3meters Engineering",
+    "email": "dev@3meters.com>"
+  },
+  "contributors": [
+    { "name": "George Snelling", "email": "george@3meters.com" },
+    { "name": "Jay Massena", "email": "jay@3meters.com" }
+  ],
+
+  "dependencies": {
+    "tipe": "*",
+    "scrub": "*",
+    "qs": "*",
+    "express": "<5",
+    "serve-static": "*",
+    "serve-favicon": "*",
+    "robots.txt": "*",
+    "compression": "*",
+    "cookie-parser": "*",
+    "cookie-session": "*",
+    "body-parser": "*",
+    "lodash": "*",
+    "commander": "*",
+    "async": "*",
+    "request": "*",
+    "knox": "*",
+    "react": "<0.13",
+    "express-react-views": "*",
+    "react-widgets": "*"
+  },
+
+  "repository": "git://github.com:3meters/patchrweb",
+  "main": "patchrweb.js"
+
+}

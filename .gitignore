@@ -1,0 +1,10 @@
+config.js
+node_modules
+
+.monitor
+.DS_Store
+*.log
+*.crt
+*.db
+*.csv
+~*
