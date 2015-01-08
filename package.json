@@ -28,7 +28,7 @@
     "lodash": "*",
     "commander": "*",
     "async": "*",
-    "request": "*",
+    "superagent": "*",
     "knox": "*",
     "react": "<0.13",
     "express-react-views": "*",

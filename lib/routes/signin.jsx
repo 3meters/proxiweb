@@ -5,12 +5,12 @@ var Layout = require('./layout.jsx')
 
 var SigninForm = React.createClass({
   render: function() {
-    var title = util.config.service.name + ' Sign In'
+    var title = config.name + ' Sign In'
     return (
       <Layout title={title}>
         <h1>{title}</h1>
         <div className="content">
-          <form id="signin" method="post" action="/v1/explore/signin">
+          <form id="signin" method="post" action="/signin">
             <div className="row">
               <input className="field" id="email" name="email" placeholder="Email" />
             </div>
