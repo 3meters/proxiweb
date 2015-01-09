@@ -29,7 +29,6 @@
     "commander": "*",
     "async": "*",
     "superagent": "*",
-    "knox": "*",
     "moment": "*",
     "react": "<0.13",
     "express-react-views": "*",
@@ -37,6 +36,5 @@
   },
 
   "repository": "git://github.com:3meters/patchrweb",
-  "main": "patchrweb.js"
-
+  "main": "server.js"
 }
