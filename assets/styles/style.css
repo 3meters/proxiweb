@@ -31,6 +31,7 @@ a {
   width: 300px;
 }
 .button {
+  float: left;
 }
 .col-container {
   width: 100%;
@@ -61,4 +62,5 @@ a {
 .picture {
   max-height: 400px;
   max-width: 400px;
+  float: left;
 }
