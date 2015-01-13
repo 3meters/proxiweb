@@ -7,6 +7,8 @@ var TopBar = React.createClass({
     var user = this.props.user
     var cred = null
 
+    if (this.props.hide) return <div />
+
     if (user) {
       cred = 'user=' + user._id + '&session=' + user.session
       return (
@@ -31,11 +33,7 @@ var TopBar = React.createClass({
 
 var BottomBar = React.createClass({
   render: function() {
-    return (
-      <div className="content pad">
-        <br />
-      </div>
-    )
+    return <div className="content pad" />
   }
 })
 
@@ -48,11 +46,12 @@ var Layout = React.createClass({
       <html>
         <head>
           <title>{title}</title>
-          <link rel="stylesheet" href="/v1/assets/styles/style.css" />
+          <link rel="stylesheet" href="/v1/assets/css/bootstrap.css" />
+          <link rel="stylesheet" href="/v1/assets/css/style.css" />
         </head>
         <body>
           <h1>{title}</h1>
-          <TopBar user={user} />
+          <TopBar user={user} hide={this.props.hideTopBar}/>
           {this.props.children}
           <BottomBar user={user} />
         </body>

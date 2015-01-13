@@ -7,7 +7,7 @@ var SigninForm = React.createClass({
   render: function() {
     var title = config.name + ' Sign In'
     return (
-      <Layout title={title}>
+      <Layout title={title} hideTopBar={true}>
         <form id="signin" method="post" action="/signin">
           <div className="row">
             <input className="field" id="email" name="email" placeholder="Email" />
@@ -16,7 +16,7 @@ var SigninForm = React.createClass({
             <input className="field" id="password" name="password" placeholder="Password" type="password" />
           </div>
           <div className="button">
-            <input type="submit", name: "go", value: "Sign in" />
+            <input type="submit" name="go" value="Sign in" />
           </div>
         </form>
       </Layout>
