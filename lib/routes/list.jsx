@@ -33,19 +33,21 @@ var Rows = React.createClass({
 
   render: function() {
 
-    var rowMarkup = this.props.data.map(function(ent) {
-      // log({ent: ent})
+    var outerClName = this.props.clName
+
+    var rowMarkup = this.props.data.map(function(doc) {
       var type = ""
-      var detailsHref = "/" + ent.collection + "/" + ent._id
-      var pictureUrl = utils.pictureUrl(ent.photo)
-      if (ent.category && ent.category.name) type = ent.category.name
+      var clName = doc.collection || outerClName
+      var detailsHref = "/" + clName + "/" + doc._id
+      var pictureUrl = utils.pictureUrl(doc.photo)
+      if (doc.category && doc.category.name) type = doc.category.name
       return (
-        <div className="row" key={ent._id}>
+        <div className="row" key={doc._id}>
           <div className="col-md-4">
             <a href={detailsHref}><img src={pictureUrl} className="pictureSm" /></a>
           </div>
           <div className="col-md-8">
-            <a href={detailsHref}>{ent.name}</a>
+            <a href={detailsHref}>{doc.name}</a>
           </div>
         </div>
       )
@@ -68,9 +70,15 @@ var List = React.createClass({
 
     if (_.isArray(data)) rows = data
     if (_.isPlainObject(data) && _.isArray(data.links)) {
+
+      // Invert the array of links with nested documents
+      // to and array of documents with nested links
       rows = data.links.map(function(link) {
         if (link.document) {
+          var linkClone = _.clone(link)
+          delete linkClone.document
           link.document.collection = link.collection
+          link.document.link = linkClone
           return link.document
         }
       })
@@ -80,8 +88,8 @@ var List = React.createClass({
 
     return (
       <Layout title={title} user={user}>
-         <Top data={parent} clName={this.props.clName}/>
-         <Rows data={rows} />
+         <Top data={parent} clName={this.props.clName} />
+         <Rows data={rows} clName={this.props.clName} />
       </Layout>
     )
   }

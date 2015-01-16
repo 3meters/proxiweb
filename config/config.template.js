@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-  serviceUri: 'https://localhost:6643',  // or https://api.aircandi.com
+  serviceUri: 'https://localhost:6643/v1',  // or https://api.aircandi.com
   name: 'Patchr',
   mode: 'development',                  // development | test | stage | production
   protocol: 'https',

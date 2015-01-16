@@ -46,8 +46,8 @@ var Layout = React.createClass({
       <html>
         <head>
           <title>{title}</title>
-          <link rel="stylesheet" href="/v1/assets/css/bootstrap.css" />
-          <link rel="stylesheet" href="/v1/assets/css/style.css" />
+          <link rel="stylesheet" href="/assets/css/bootstrap.css" />
+          <link rel="stylesheet" href="/assets/css/style.css" />
         </head>
         <body>
           <h1>{title}</h1>

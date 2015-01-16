@@ -18,3 +18,10 @@
   max-width: 140px;
   float: left;
 }
+.field {
+  width: 300px;
+  float: left;
+}
+.button {
+  float: left;
+}

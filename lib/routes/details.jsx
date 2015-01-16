@@ -1,7 +1,8 @@
 
 /** @jsx React.DOM */
 
-// Display details view for an entity
+// Display details view for a document
+
 
 var React = require('react')
 var Layout = require('./layout')
@@ -79,7 +80,7 @@ var Fields = React.createClass({
             {fields[key].label}
           </div>
           <div className="col-md-8">
-            <Field name={key} val={data[key]} />
+            <Field name={key} value={data[key]} />
           </div>
         </div>
       )
