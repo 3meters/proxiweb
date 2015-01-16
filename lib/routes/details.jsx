@@ -7,7 +7,7 @@ var React = require('react')
 var Layout = require('./layout')
 var ButtonBar = require('./buttons')
 var scrub = require('scrub')
-var utils = require('../utils')
+var utils = require('./utils')
 
 
 // Default display properties for fields
@@ -52,59 +52,62 @@ var fields = {
 })()
 
 
-// Left column of field labels
-var LeftCol = React.createClass({
+// Field
+var Field = React.createClass({
   render: function() {
-    var rows = Object.keys(fields).map(function(key) {
-      return <div className="row" key={key}>{fields[key].label}</div>
-    })
-    return (<div className="col-left pad">{rows}</div>)
+    var name = this.props.name
+    var value = this.props.value
+    if (fields[name].className.indexOf('picture') >= 0) {
+      var picUrl = utils.pictureUrl(value)
+      return <img src={picUrl} className={fields[name].className} />
+    } else {
+      return <div className={fields[name].className}>{value}</div>
+    }
   }
 })
 
 
-// Right column of field values
-var RightCol = React.createClass({
+// Fields
+var Fields = React.createClass({
   render: function() {
-    var ent = this.props.data
-
+    var data = this.props.data
     var rows = Object.keys(fields).map(function(key) {
-      if (fields[key].className === 'picture') {
-        var picUrl = utils.pictureUrl(ent[key])
-        return (
-          <div className="row" key={key}>
-            <img src={picUrl} className='picture' />
+      if (!data[key]) return <div />
+      return (
+        <div className="row" key={key}>
+          <div className="col-md-4">
+            {fields[key].label}
           </div>
-        )
-      } else {
-        return (<div className="row" key={key}>{ent[key]}</div>)
-      }
+          <div className="col-md-8">
+            <Field name={key} val={data[key]} />
+          </div>
+        </div>
+      )
     })
+    return <div>{rows}</div>
+  }
+})
+
+var Details = React.createClass({
+
+  render: function() {
+
+    var data = this.props.data
+    var user = this.props.user
+    var title = this.props.user
+    var clName = this.props.clName
+
+    if (_.isArray(data)) data = data[0]
 
     var buttons = [
-      {key: "update", value: "Update", href: "/update/" + ent.schema + '/' + ent._id},
-      {key: "delete", value: "Delete", href: "/delete/" + ent.schema + '/' + ent._id},
+      {key: "update", value: "Update", href: "/" + clName + "/" + data._id + "/edit"},
+      {key: "delete", value: "Delete", href: "/" + clName + "/" + data._id + "/delete"},
     ]
 
     return (
-      <div className="col-center pad">
-        {rows}
-        <ButtonBar buttons={buttons} />
-      </div>
-    )
-  }
-})
-
-
-var Details = React.createClass({
-  render: function() {
-    var data = this.props.data
-    var user = this.props.user
-    if (_.isArray(data)) data = data[0]
-    return (
       <Layout user={user}>
-        <LeftCol />
-        <RightCol user={user} data={data} />
+        <Fields user={user} data={data} />
+        <ButtonBar buttons={buttons} />
       </Layout>
     )
   }

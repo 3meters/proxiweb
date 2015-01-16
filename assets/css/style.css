@@ -1,5 +1,20 @@
-.picture {
+.pictureSm {
   max-height: 80px;
   max-width: 80px;
+  float: left;
+}
+.pictureMd {
+  max-height: 140px;
+  max-width: 140px;
+  float: left;
+}
+.pictureLg {
+  max-height: 300px;
+  max-width: 300px;
+  float: left;
+}
+.picture {
+  max-height: 140px;
+  max-width: 140px;
   float: left;
 }
