@@ -1,4 +1,44 @@
+body {
+  padding: 20px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+a {
+  color: #00b7ff;
+}
+.top {
+  padding: 10px 10px 10px;
+  margin: -10px -10px 10px;
+}
+.pad {
+  margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+  margin-top: 0;
+}
+.form {
+}
+.checkbox {
+}
+.field {
+  width: 300px;
+}
+.button {
+  float: left;
+}
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+.fieldLabel {
+  width: 60px;
+  float: left;
+  text-align: right;
+  margin: 10px;
+  margin-top: 0;
+}
 .pictureSm {
+  min-height: 80px;
+  min-width: 80px;
   max-height: 80px;
   max-width: 80px;
   float: left;
@@ -8,20 +48,8 @@
   max-width: 140px;
   float: left;
 }
-.pictureLg {
-  max-height: 300px;
-  max-width: 300px;
-  float: left;
-}
 .picture {
   max-height: 140px;
   max-width: 140px;
-  float: left;
-}
-.field {
-  width: 300px;
-  float: left;
-}
-.button {
   float: left;
 }

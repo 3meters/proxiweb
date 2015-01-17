@@ -12,6 +12,7 @@ var Top = React.createClass({
 
   render: function() {
     var data = this.props.data
+
     if (!data) return <div />
 
     var clName = this.props.clName
@@ -42,11 +43,11 @@ var Rows = React.createClass({
       var pictureUrl = utils.pictureUrl(doc.photo)
       if (doc.category && doc.category.name) type = doc.category.name
       return (
-        <div className="row" key={doc._id}>
-          <div className="col-md-4">
+        <div className="row pad" key={doc._id}>
+          <div className="col left pad">
             <a href={detailsHref}><img src={pictureUrl} className="pictureSm" /></a>
           </div>
-          <div className="col-md-8">
+          <div className="col left pad">
             <a href={detailsHref}>{doc.name}</a>
           </div>
         </div>

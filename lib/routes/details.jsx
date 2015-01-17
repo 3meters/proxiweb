@@ -62,7 +62,7 @@ var Field = React.createClass({
       var picUrl = utils.pictureUrl(value)
       return <img src={picUrl} className={fields[name].className} />
     } else {
-      return <div className={fields[name].className}>{value}</div>
+      return <p className={fields[name].className}>{value}</p>
     }
   }
 })
@@ -72,30 +72,31 @@ var Field = React.createClass({
 var Fields = React.createClass({
   render: function() {
     var data = this.props.data
+    log(data)
     var rows = Object.keys(fields).map(function(key) {
       if (!data[key]) return <div />
       return (
-        <div className="row" key={key}>
-          <div className="col-md-4">
+        <div className="row pad" key={key}>
+          <div className="fieldLabel">
             {fields[key].label}
           </div>
-          <div className="col-md-8">
-            <Field name={key} value={data[key]} />
-          </div>
+          <Field name={key} value={data[key]} />
         </div>
       )
     })
-    return <div>{rows}</div>
+    return <div className="row pad">{rows}</div>
   }
 })
 
+
+// Details
 var Details = React.createClass({
 
   render: function() {
 
     var data = this.props.data
     var user = this.props.user
-    var title = this.props.user
+    var title = this.props.title
     var clName = this.props.clName
 
     if (_.isArray(data)) data = data[0]

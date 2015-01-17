@@ -8,8 +8,7 @@ var SignupForm = React.createClass({
     var title = config.name + ' New Account'
     return (
       <Layout title={title}>
-        <h1>{title}</h1>
-        <div className="content pad">
+        <div className="form">
           <form key="signup" method="post" action="/signup">
             <div className="row">
               <input className="field" key="name" name="name" placeholder="Name" />

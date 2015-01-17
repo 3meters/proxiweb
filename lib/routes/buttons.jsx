@@ -8,16 +8,16 @@ var ButtonBar = React.createClass({
 
     var buttonLayout = this.props.buttons.map(function(btn) {
       return (
-        <div className="button">
-          <form key={btn.key} method="link" action={btn.href}>
-             <input type="submit" value={btn.value} />
+        <div className="left" key={btn.key}>
+          <form method="link" action={btn.href}>
+             <input type="submit" value={btn.value} className="button"/>
           </form>
         </div>
       )
     })
 
     return (
-      <div className="container">
+      <div className="row pad">
         {buttonLayout}
       </div>
     )
