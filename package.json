@@ -36,5 +36,5 @@
   },
 
   "repository": "git://github.com:3meters/patchrweb",
-  "main": "server.js"
+  "main": "pweb.js"
 }
