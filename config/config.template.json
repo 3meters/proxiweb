@@ -1,0 +1,13 @@
+{
+  "serviceUri": "https://api.aircandi.com:8443/v1",
+  "name": "Proxiweb",
+  "mode": "development",
+  "protocol": "https",
+  "host": "localhost",
+  "port": 8843,
+  "ssl": {
+    "keyFilePath": "./keys/dev/dev.pem",
+    "certFilePath": "./keys/dev/dev.crt",
+    "caFilePath": null
+  }
+}

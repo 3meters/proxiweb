@@ -1,9 +1,9 @@
 {
 
-  "name": "patchrweb",
+  "name": "proxiweb",
   "version": "1.0.0",
   "private": true,
-  "description": "Patchr website",
+  "description": "Web UI over proxibase web service",
   "author": {
     "name": "3meters Engineering",
     "email": "dev@3meters.com>"
@@ -14,23 +14,23 @@
   ],
 
   "dependencies": {
+    "async": "*",
+    "express": "<5",
+    "lodash": "*",
     "tipe": "*",
     "scrub": "*",
-    "express": "<5",
     "serve-static": "*",
     "serve-favicon": "*",
     "compression": "*",
     "cookie-parser": "*",
     "cookie-session": "*",
     "body-parser": "*",
-    "lodash": "*",
     "commander": "*",
-    "async": "*",
     "moment": "*",
     "react": "<0.13",
     "express-react-views": "*",
     "react-widgets": "*",
-    "proxireq": "git://github.com/3meters/proxireq.git#master"
+    "proxireq": "git://github.com/3meters/proxireq.git"
   },
 
   "repository": "git://github.com:3meters/patchrweb",
