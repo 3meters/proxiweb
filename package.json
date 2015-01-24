@@ -16,11 +16,9 @@
   "dependencies": {
     "tipe": "*",
     "scrub": "*",
-    "qs": "*",
     "express": "<5",
     "serve-static": "*",
     "serve-favicon": "*",
-    "robots.txt": "*",
     "compression": "*",
     "cookie-parser": "*",
     "cookie-session": "*",
@@ -28,11 +26,11 @@
     "lodash": "*",
     "commander": "*",
     "async": "*",
-    "superagent": "*",
     "moment": "*",
     "react": "<0.13",
     "express-react-views": "*",
-    "react-widgets": "*"
+    "react-widgets": "*",
+    "proxireq": "git://github.com/3meters/proxireq.git#master"
   },
 
   "repository": "git://github.com:3meters/patchrweb",
