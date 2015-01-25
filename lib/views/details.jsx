@@ -72,7 +72,6 @@ var Field = React.createClass({
 var Fields = React.createClass({
   render: function() {
     var data = this.props.data
-    log(data)
     var rows = Object.keys(fields).map(function(key) {
       if (!data[key]) return <div />
       return (
