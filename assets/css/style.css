@@ -10,15 +10,12 @@ a {
   margin: -10px -10px 10px;
 }
 .pad {
-  margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
+  margin: 2px; /*Margins for inner DIV inside each column (to provide padding)*/
   margin-top: 0;
 }
 .form {
 }
 .checkbox {
-}
-.field {
-  width: 300px;
 }
 .left {
   float: left;
@@ -26,12 +23,15 @@ a {
 .right {
   float: right;
 }
+.field {
+  width: 300px;
+}
 .fieldLabel {
-  width: 60px;
+  width: 150px;
   float: left;
   text-align: right;
   margin: 10px;
-  margin-top: 0;
+  margin-top: 4px;
 }
 .pictureSm {
   min-height: 80px;

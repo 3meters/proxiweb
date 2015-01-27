@@ -25,20 +25,10 @@ var fieldSpec = {
 
 // Map entity fields and their diplay properties
 var fields = {
-  name: {
-    label: 'Name',
-  },
   _id:  {
     label: 'Id',
   },
-  owner: {
-    label: 'Owner',
-  },
-  createdDate: {
-    label: 'Created'
-  },
   photo: {
-    label: 'Picture',
     className: 'picture',
   },
 }
@@ -79,7 +69,7 @@ var Fields = React.createClass({
           <div className="fieldLabel">
             {fields[key].label}
           </div>
-          <Field name={key} value={data[key]} />
+          <Field mode={this.props.mode} name={key} value={data[key]} />
         </div>
       )
     })
@@ -94,6 +84,7 @@ var Details = React.createClass({
   render: function() {
 
     var data = this.props.data
+    var mode = this.props.mode  // 'view', 'edit', 'create'
     var user = this.props.user
     var title = this.props.title
     var clName = this.props.clName
