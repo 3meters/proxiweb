@@ -8,7 +8,9 @@ var ButtonBar = React.createClass({
 
     var buttonLayout = this.props.buttons.map(function(btn) {
       return (
-        <a className="btn btn-default left" key={btn.key} href={btn.href}>{btn.value}</a>
+        <div className="left" key={btn.key}>
+          <a className="btn btn-default" href={btn.href}>{btn.value}</a>
+        </div>
       )
     })
 

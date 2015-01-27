@@ -74,6 +74,7 @@ var fieldBlacklist = {
   public: true,
   subtitle: true,
   position: true,
+  data: true,
 }
 
 
@@ -101,8 +102,8 @@ var Fields = React.createClass({
     var fieldsMarkup = Object.keys(fields).map(function(name) {
       // Type-specific formatting goes here
       return (
-        <div className="row">
-          <input className="field" key={name} name={name} placeholder={name} />
+        <div className="row pad" key={name}>
+          <input className="field" name={name} placeholder={name} />
         </div>
       )
     })
@@ -127,7 +128,9 @@ var Create = React.createClass({
         <div className="form">
           <form key="create" method="post" action={"/" + clName}>
             <Fields schema={schema} user={user}/>
-            <input type="submit" name="cmdRun" value="Create" />
+            <div className="row pad">
+              <input className="btn btn-default" type="submit" value="Create" />
+            </div>
           </form>
         </div>
       </Layout>

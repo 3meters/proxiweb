@@ -29,7 +29,6 @@
     "moment": "*",
     "react": "<0.13",
     "express-react-views": "*",
-    "react-widgets": "*",
     "proxireq": "git://github.com/3meters/proxireq.git"
   },
 
