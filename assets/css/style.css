@@ -26,6 +26,10 @@ a {
 .field {
   width: 300px;
 }
+.fieldDisplay {
+  margin: 10px;
+  margin-top: 4px;
+}
 .fieldLabel {
   width: 150px;
   float: left;
