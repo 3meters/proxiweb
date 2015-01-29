@@ -6,8 +6,6 @@
 
 var React = require('react')
 var Layout = require('./layout')
-var ButtonBar = require('./buttons')
-var scrub = require('scrub')
 var utils = require('./utils')
 
 
@@ -15,44 +13,53 @@ var utils = require('./utils')
 // UI.  If blacklist value is true, always remove them.
 // If it is an object, removed them in the modes specified
 // but display them in the modes not specified
-function pruneFields(schema, mode) {
+function buildFields(schema, mode) {
 
-  var blacklist = {
-    _acl: true,
-    _id: {create: true, edit: true},
-    _creator: true,
-    _modifier: true,
-    _owner: true,
-    activityDate: true,
-    createdDate: {create: true, edit: true},
-    createdIp: true,
-    data: true,
-    hidden: true,
-    modifiedDate: {create: true, edit: true},
-    location: true,
-    locked: true,
-    modifiedIp: true,
-    namelc: true,
-    position: true,
-    photo: {create: true},
-    public: true,
-    restricted: true,
-    schema: true,
-    subtitle: true,
+  var fields = {}
+
+  var whitelist = {
+    _before: {
+      photo: {view: true, edit: true},
+      name: true,
+      _id:  {view: true},
+      description: true,
+    },
+    cls: {
+      users: {
+        bio: true,
+      },
+    },
+    _after: {
+      owner: {view: true},
+      createdDate: {view: true},
+      modifiedDate: {view: true},
+    },
   }
 
-  // Prune
-  for (var fieldName in schema.fields) {
-    if (blacklist[fieldName]) {
-      if (_.isBoolean(blacklist[fieldName])) {
-        delete schema.fields[fieldName]
-      }
-      else if (blacklist[fieldName][mode]) {
-        delete schema.fields[fieldName]
-      }
+  // Conditionally add field depending on specification and mode
+  function add(name, spec) {
+    if (!spec) return
+    if (_.isBoolean(spec) || spec[mode]) {
+      fields[name] = schema.fields[name]
     }
   }
-  return schema
+
+  // Beginning common fields
+  for (var fieldName in whitelist._before) {
+    if (schema.fields[fieldName]) add(fieldName, whitelist._before[fieldName])
+  }
+  // Collection-specific fields
+  if (whitelist.cls[schema.collection]) {
+    for (fieldName in whitelist.cls[schema.collection]) {
+      if (schema.fields[fieldName]) add(fieldName, whitelist.cls[schema.collection][fieldName])
+    }
+  }
+  // Ending common fields
+  for (var fieldName in whitelist._after) {
+    if (schema.fields[fieldName]) add(fieldName, whitelist._after[fieldName])
+  }
+
+  return fields
 }
 
 
@@ -70,7 +77,7 @@ function buildDisplayProperties(schema) {
     component: null,
   }
 
-  // Non-default field diplay properties
+  // Non-default display properties
   var exceptions = {
     _id:  {label: 'Id'},
     photo: {component: 'Picture'},
@@ -88,7 +95,7 @@ function buildDisplayProperties(schema) {
     }
   }
 
-  // Override exceptions
+  // Override defaults with exceptions
   for (var fieldName in schema.fields) {
     if (exceptions[fieldName]) {
       for (var prop in exceptions[fieldName]) {
@@ -117,11 +124,10 @@ var Frame = React.createClass({
 })
 
 
+// Render a picture
 var Picture = React.createClass({
   render: function() {
-    var name = this.props.name
-    var value = this.props.value
-    var picUrl = utils.pictureUrl(value)
+    var picUrl = utils.pictureUrl(this.props.value)
     return <img src={picUrl} className="picture" />
   }
 })
@@ -173,6 +179,48 @@ var Fields = React.createClass({
 })
 
 
+// Action bar
+//
+// TODO: Add a Cancel button.  This sould execute a client-side javascript window.back
+//   command, but I haven't figured out how to send client-side script down yet.  Solution
+//   possibly involves creating a React component directly, without using the .jxs transpiler.
+//
+var Actions = React.createClass({
+
+  render: function() {
+
+    var mode = this.props.mode
+    var clName = this.props.clName
+    var data = this.props.data || {}
+    var hrefDoc = "/" + clName + "/" + data._id
+
+    var actionMarkup = function() {
+      switch (mode) {
+        case 'view': return (
+          <div>
+            <a className="btn btn-default" href={hrefDoc + "/edit"}>Edit</a>
+            <a className="btn btn-default" href={hrefDoc + "/delete"}>Delete</a>
+          </div>
+        )
+        case 'create':
+        case 'edit':  return (
+          <div>
+            <input className="btn btn-default" type="submit" value="Save" />
+          </div>
+        )
+      }
+    }()
+
+    return (
+      <div className="row pad">
+        <div className="fieldLabel" />
+        <div>{actionMarkup}</div>
+      </div>
+    )
+  }
+})
+
+
 // Details
 var Details = React.createClass({
 
@@ -187,29 +235,17 @@ var Details = React.createClass({
 
     // Prune blacklisted fields for non-admins
     if (!user || user.role !== 'admin') {
-      schema = pruneFields(schema, mode)
+      schema.fields = buildFields(schema, mode)
     }
 
     // Set display properties
     schema = buildDisplayProperties(schema, mode)
 
-    /*
-    var buttons = [
-      {key: "update", value: "Update", href: "/" + clName + "/" + data._id + "/edit"},
-      {key: "delete", value: "Delete", href: "/" + clName + "/" + data._id + "/delete"},
-    ]
-
-    <ButtonBar mode={mode}, clName={clName}, data={data} />
-
-    <div className="row pad">
-      <input className="btn btn-default" type="submit" value="Create" />
-    </div>
-    */
-
     return (
       <Layout user={user} title={title}>
         <Frame mode={mode} clName={clName} data={data}>
           <Fields mode={mode} schema={schema} clName={clName} user={user} data={data} />
+          <Actions mode={mode} clName={clName} data={data} />
         </Frame>
       </Layout>
     )
