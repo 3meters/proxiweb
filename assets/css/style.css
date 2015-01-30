@@ -6,22 +6,21 @@ a {
   color: #00b7ff;
 }
 .top {
-  padding: 10px 10px 10px;
-  margin: -10px -10px 10px;
+  margin: 10px;
+  margin-bottom: 40px;
+  text-align: right;
+  max-width: 500px;
+}
+.bottom {
+  margin: 10px;
+  margin-top: 40px;
 }
 .pad {
-  margin: 2px; /*Margins for inner DIV inside each column (to provide padding)*/
-  margin-top: 0;
-}
-.form {
-}
-.checkbox {
+  margin: 4px; /*Margins for inner DIV inside each column (to provide padding)*/
+  margin-top: 0px;
 }
 .left {
   float: left;
-}
-.right {
-  float: right;
 }
 .field {
   width: 300px;
@@ -30,7 +29,7 @@ a {
   margin: 10px;
   margin-top: 4px;
 }
-.fieldLabel {
+.leftCol {
   width: 150px;
   float: left;
   text-align: right;

@@ -40,7 +40,7 @@ var Rows = React.createClass({
       var type = ""
       var clName = doc.collection || outerClName
       var detailsHref = "/" + clName + "/" + doc._id
-      var pictureUrl = utils.pictureUrl(doc.photo)
+      var pictureUrl = utils.pictureUrl(doc.photo, 'sz')
       if (doc.category && doc.category.name) type = doc.category.name
       return (
         <div className="row pad" key={doc._id}>
@@ -48,7 +48,9 @@ var Rows = React.createClass({
             <a href={detailsHref}><img src={pictureUrl} className="pictureSm" /></a>
           </div>
           <div className="col left pad">
-            <a href={detailsHref}>{doc.name}</a>
+            <a href={detailsHref}>{doc.name}</a><br />
+            {doc.owner}
+
           </div>
         </div>
       )

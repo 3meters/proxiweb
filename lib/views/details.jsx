@@ -13,58 +13,67 @@ var utils = require('./utils')
 // UI.  If blacklist value is true, always remove them.
 // If it is an object, removed them in the modes specified
 // but display them in the modes not specified
-function buildFields(schema, mode) {
+function buildFields(clName, oldFields, mode, asAdmin) {
 
   var fields = {}
 
   var whitelist = {
-    _before: {
+    before: {
       photo: {view: true, edit: true},
       name: true,
       _id:  {view: true},
+      owner: {view: true},
       description: true,
     },
     cls: {
       users: {
         bio: true,
       },
+      places: {
+        phone: true,
+        address: true,
+        city: true,
+        region: true,
+        postalCode: true,
+      },
     },
-    _after: {
-      owner: {view: true},
+    after: {
       createdDate: {view: true},
       modifiedDate: {view: true},
     },
   }
 
-  // Conditionally add field depending on specification and mode
+  // Conditionally add fields depending on specification and mode
   function add(name, spec) {
     if (!spec) return
     if (_.isBoolean(spec) || spec[mode]) {
-      fields[name] = schema.fields[name]
+      fields[name] = oldFields[name] || {type: 'string'}  // Not in schema, like owner, guess string
     }
   }
 
   // Beginning common fields
-  for (var fieldName in whitelist._before) {
-    if (schema.fields[fieldName]) add(fieldName, whitelist._before[fieldName])
+  for (var fieldName in whitelist.before) {
+    add(fieldName, whitelist.before[fieldName])
   }
   // Collection-specific fields
-  if (whitelist.cls[schema.collection]) {
-    for (fieldName in whitelist.cls[schema.collection]) {
-      if (schema.fields[fieldName]) add(fieldName, whitelist.cls[schema.collection][fieldName])
+  if (whitelist.cls[clName]) {
+    for (fieldName in whitelist.cls[clName]) {
+      add(fieldName, whitelist.cls[clName][fieldName])
     }
   }
   // Ending common fields
-  for (var fieldName in whitelist._after) {
-    if (schema.fields[fieldName]) add(fieldName, whitelist._after[fieldName])
+  for (var fieldName in whitelist.after) {
+    add(fieldName, whitelist.after[fieldName])
   }
+  // Admins see all fields
+  if (asAdmin) fields = _.merge(fields, oldFields)
 
   return fields
 }
 
 
 // Construct the display properties for any field
-function buildDisplayProperties(schema) {
+function buildDisplayProperties(fields) {
 
   // Default field display properties
   var defaults = {
@@ -84,26 +93,25 @@ function buildDisplayProperties(schema) {
   }
 
   // Construct default display properties
-  for (var fieldName in schema.fields) {
+  for (var fieldName in fields) {
     for (var prop in defaults) {
       if (_.isFunction(defaults[prop])) {
-        schema.fields[fieldName][prop] = defaults[prop].call(
-            schema.fields[fieldName], fieldName, schema.fields[fieldName].type
-          )
+        fields[fieldName][prop] =
+          defaults[prop].call(fields[fieldName], fieldName, fields[fieldName].type)
       }
-      else schema.fields[fieldName][prop] = defaults[prop]
+      else fields[fieldName][prop] = defaults[prop]
     }
   }
 
   // Override defaults with exceptions
-  for (var fieldName in schema.fields) {
+  for (var fieldName in fields) {
     if (exceptions[fieldName]) {
       for (var prop in exceptions[fieldName]) {
-        schema.fields[fieldName][prop] = exceptions[fieldName][prop]
+        fields[fieldName][prop] = exceptions[fieldName][prop]
       }
     }
   }
-  return schema
+  return fields
 }
 
 
@@ -139,15 +147,17 @@ var Field = React.createClass({
 
     var name = this.props.name
     var value = this.props.value
-    var fieldSpec = this.props.schema.fields[name]
+    var fieldSpec = this.props.fields[name]
 
     if (fieldSpec.component === 'Picture') {
       return <Picture name={name} value={value} />
     } else {
+      var defaultValue = value
+      if (fieldSpec.type === 'object') defaultValue=null
       switch (this.props.mode) {
         case 'view': return <p className="fieldDisplay">{value}</p>
         case 'create': return <input className={fieldSpec.className} name={name} />
-        case 'edit': return <input className={fieldSpec.className} name={name} defaultValue={value} />
+        case 'edit': return <input className={fieldSpec.className} name={name} defaultValue={defaultValue} />
       }
     }
   }
@@ -160,16 +170,16 @@ var Fields = React.createClass({
   render: function() {
 
     var clName = this.props.clName
-    var schema = this.props.schema
+    var fields = this.props.fields
     var user = this.props.user
     var mode = this.props.mode
     var data = this.props.data || {}
 
-    var fieldsMarkup = Object.keys(schema.fields).map(function(fieldName) {
+    var fieldsMarkup = Object.keys(fields).map(function(fieldName) {
       return (
         <div className="row pad" key={fieldName}>
-          <p className="fieldLabel">{schema.fields[fieldName].label}{":"}</p>
-          <Field mode={mode} name={fieldName} value={data[fieldName]} schema={schema} />
+          <p className="leftCol">{fields[fieldName].label}{":"}</p>
+          <Field mode={mode} name={fieldName} value={data[fieldName]} fields={fields} />
         </div>
       )
     })
@@ -213,7 +223,7 @@ var Actions = React.createClass({
 
     return (
       <div className="row pad">
-        <div className="fieldLabel" />
+        <div className="leftCol" />
         <div>{actionMarkup}</div>
       </div>
     )
@@ -232,19 +242,22 @@ var Details = React.createClass({
     var title = this.props.title
     var clName = this.props.clName
     var schema = this.props.schema
+    var fields = {}
 
-    // Prune blacklisted fields for non-admins
-    if (!user || user.role !== 'admin') {
-      schema.fields = buildFields(schema, mode)
-    }
+    var asAdmin = (user && user.role === 'admin')
 
-    // Set display properties
-    schema = buildDisplayProperties(schema, mode)
+    if (asAdmin) fields = _.cloneDeep(schema.fields)
+
+    // Build the display field list
+    fields = buildFields(clName, fields, mode, asAdmin)
+
+    // Set field display properties
+    fields = buildDisplayProperties(fields, mode)
 
     return (
       <Layout user={user} title={title}>
         <Frame mode={mode} clName={clName} data={data}>
-          <Fields mode={mode} schema={schema} clName={clName} user={user} data={data} />
+          <Fields mode={mode} fields={fields} clName={clName} user={user} data={data} />
           <Actions mode={mode} clName={clName} data={data} />
         </Frame>
       </Layout>

@@ -5,35 +5,37 @@ var React = require('react')
 var TopBar = React.createClass({
   render: function() {
     var user = this.props.user
-    var cred = null
 
     if (this.props.hide) return <div />
 
     if (user) {
-      cred = 'user=' + user._id + '&session=' + user.session
       return (
-        <div className="content pad">
-            Welcome {user.name}{": "}
-            <a href="/signout">Sign out</a>{" "}
-            <br /><br />
+        <div className="top">
+          Welcome {user.name}{": "}
+          <a href="/signout">Sign out</a>{" "}
         </div>
       )
     } else {
       return (
-        <div className="content pad">
+        <div className="top">
           <a href="/signup">Sign up</a>{" "}
           <a href="/signin">Sign in</a>
-          <br /><br />
         </div>
       )
     }
   }
 })
 
-
 var BottomBar = React.createClass({
   render: function() {
-    return <div className="content pad" />
+    return (
+      <div>
+        <div className="bottom">
+          <div className="leftCol" />
+          <div>{"Service: " + config.serviceUri}</div>
+        </div>
+      </div>
+    )
   }
 })
 
@@ -53,7 +55,7 @@ var Layout = React.createClass({
           <h1>{title}</h1>
           <TopBar user={user} hide={this.props.hideTopBar}/>
           {this.props.children}
-          <BottomBar user={user} />
+          <BottomBar />
         </body>
       </html>
     )
