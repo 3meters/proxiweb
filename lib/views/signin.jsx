@@ -7,7 +7,6 @@ var SigninForm = React.createClass({
   render: function() {
     var title = config.name + ' Sign In'
     var prev = this.props.prev  // where to return on success
-    log('signin jsx prev: ' + prev)
     return (
       <Layout title={title} hideTopBar={true}>
         <form id="signin" method="post" action="/signin">

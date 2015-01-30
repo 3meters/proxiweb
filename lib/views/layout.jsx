@@ -18,8 +18,8 @@ var TopBar = React.createClass({
     } else {
       return (
         <div className="top">
-          <a href="/signup">Sign up</a>{" "}
-          <a href="/signin">Sign in</a>
+          {"Sign "}<a href="/signup">up</a>
+          {" : "}<a href="/signin">in</a>
         </div>
       )
     }
