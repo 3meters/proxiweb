@@ -34,10 +34,15 @@ a {
 }
 .leftCol {
   width: 150px;
+  padding:
   float: left;
   text-align: right;
   margin: 10px;
   margin-top: 4px;
+}
+.rightCol {
+  margin: 10px;
+  margin-left: 160px;
 }
 .picture {
   max-height: 240px;
@@ -45,8 +50,9 @@ a {
   float: left;
 }
 .pictureSm {
-  max-height: 80px;
-  max-width: 80px;
+  min-height: 10px;
+  max-height: 100px;
+  max-width: 100px;
   float: left;
 }
 .pictureLg {

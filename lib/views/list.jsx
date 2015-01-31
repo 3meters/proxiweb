@@ -20,9 +20,13 @@ var Top = React.createClass({
     var pictureUrl = utils.pictureUrl(data.photo)
 
     return (
-      <div className="container">
-        <a href={href}><img src={pictureUrl} className="pictureMd" /></a>
-        <a href={href}>{data.name}</a>
+      <div>
+        <div className="row">
+          <a href={href}><img src={pictureUrl} className="picture" /></a>
+        </div>
+        <div className="row">
+          <a href={href}>{data.name}</a>
+        </div>
       </div>
     )
   }
@@ -41,14 +45,14 @@ var Rows = React.createClass({
       var clName = doc.collection || outerClName
       var detailsHref = "/" + clName + "/" + doc._id
       var ownerHref = "/users/" + doc._owner
-      var pictureUrl = utils.pictureUrl(doc.photo, 'sz')
+      var pictureUrl = utils.pictureUrl(doc.photo, 'sm')
       if (doc.category && doc.category.name) type = doc.category.name
       return (
         <div className="row pad list" key={doc._id}>
-          <div className="leftCol">
+          <div className="leftCol text-right">
             <a href={detailsHref}><img src={pictureUrl} className="pictureSm" /></a>
           </div>
-          <div >
+          <div className="rightCol">
             <a href={detailsHref}>{doc.name}</a><br />
             <a href={ownerHref}>{doc.owner}</a><br />
           </div>
