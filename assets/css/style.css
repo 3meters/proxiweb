@@ -28,29 +28,22 @@ a {
 .list {
   min-height: 80px;
 }
-.fieldDisplay {
-  margin: 10px;
-  margin-top: 4px;
-}
-.leftCol {
-  width: 150px;
-  padding:
+.col1 {
+  width: 140px;
   float: left;
   text-align: right;
-  margin: 10px;
   margin-top: 4px;
 }
-.rightCol {
-  margin: 10px;
+.col2 {
   margin-left: 160px;
+  margin-top: 4px;
 }
 .picture {
-  max-height: 240px;
-  max-width: 240px;
+  max-height: 300px;
+  max-width: 300px;
   float: left;
 }
 .pictureSm {
-  min-height: 10px;
   max-height: 100px;
   max-width: 100px;
   float: left;

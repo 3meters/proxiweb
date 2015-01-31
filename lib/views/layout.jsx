@@ -9,19 +9,10 @@ var TopBar = React.createClass({
     if (this.props.hide) return <div />
 
     if (user) {
-      return (
-        <div className="top">
-          Welcome {user.name}{": "}
-          <a href="/signout">Sign out</a>{" "}
-        </div>
-      )
-    } else {
-      return (
-        <div className="top">
-          {"Sign "}<a href="/signup">up</a>
-          {" : "}<a href="/signin">in</a>
-        </div>
-      )
+      return <div className="top">{user.name}{"  "}<a href="/signout">Sign out</a></div>
+    }
+    else {
+      return <div className="top"><a href="/signin">Sign in</a></div>
     }
   }
 })
@@ -31,7 +22,7 @@ var BottomBar = React.createClass({
     return (
       <div>
         <div className="bottom">
-          <div className="leftCol" />
+          <div className="col1" />
           <div>{"Service: " + config.serviceUri}</div>
         </div>
       </div>

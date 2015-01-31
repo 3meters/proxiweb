@@ -6,7 +6,7 @@
 
 var React = require('react')
 var Layout = require('./layout')
-var utils = require('./utils')
+var utils = require('../utils')
 
 
 // Remove fields that should not be displayed in the web
@@ -147,7 +147,7 @@ var Field = React.createClass({
 
     var name = this.props.name
     var value = this.props.value
-    var fieldSpec = this.props.fields[name]
+    var fieldSpec = this.props.fieldSpec
 
     if (fieldSpec.component === 'Picture') {
       return <Picture name={name} value={value} />
@@ -155,7 +155,7 @@ var Field = React.createClass({
       var defaultValue = value
       if (fieldSpec.type === 'object') defaultValue=null
       switch (this.props.mode) {
-        case 'view': return <p className="fieldDisplay">{value}</p>
+        case 'view': return <p>{value}</p>
         case 'create': return <input className={fieldSpec.className} name={name} />
         case 'edit': return <input className={fieldSpec.className} name={name} defaultValue={defaultValue} />
       }
@@ -177,9 +177,13 @@ var Fields = React.createClass({
 
     var fieldsMarkup = Object.keys(fields).map(function(fieldName) {
       return (
-        <div className="row pad" key={fieldName}>
-          <p className="leftCol">{fields[fieldName].label}{":"}</p>
-          <Field mode={mode} name={fieldName} value={data[fieldName]} fields={fields} />
+        <div className="row" key={fieldName}>
+          <div className="col1">
+            <p>{fields[fieldName].label}{":"}</p>
+          </div>
+          <div className="col2">
+            <Field mode={mode} name={fieldName} value={data[fieldName]} fieldSpec={fields[fieldName]} />
+          </div>
         </div>
       )
     })
@@ -193,7 +197,7 @@ var Fields = React.createClass({
 //
 // TODO: Add a Cancel button.  This sould execute a client-side javascript window.back
 //   command, but I haven't figured out how to send client-side script down yet.  Solution
-//   possibly involves creating a React component directly, without using the .jxs transpiler.
+//   possibly involves creating a React component directly, bypassing the .jsx transpiler.
 //
 var Actions = React.createClass({
 
@@ -223,7 +227,7 @@ var Actions = React.createClass({
 
     return (
       <div className="row pad">
-        <div className="leftCol" />
+        <div className="col1" />
         <div>{actionMarkup}</div>
       </div>
     )

@@ -5,7 +5,7 @@
 
 var React = require('react')
 var Layout = require('./layout')
-var utils = require('./utils')
+var utils = require('../utils')
 
 // Top
 var Top = React.createClass({
@@ -49,10 +49,10 @@ var Rows = React.createClass({
       if (doc.category && doc.category.name) type = doc.category.name
       return (
         <div className="row pad list" key={doc._id}>
-          <div className="leftCol text-right">
+          <div className="col1 text-right">
             <a href={detailsHref}><img src={pictureUrl} className="pictureSm" /></a>
           </div>
-          <div className="rightCol">
+          <div className="col2">
             <a href={detailsHref}>{doc.name}</a><br />
             <a href={ownerHref}>{doc.owner}</a><br />
           </div>
