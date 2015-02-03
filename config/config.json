@@ -4,7 +4,7 @@
   "mode": "development",
   "protocol": "https",
   "host": "localhost",
-  "port": 8843,
+  "port": 443,
   "ssl": {
     "keyFilePath": "./keys/dev/dev.pem",
     "certFilePath": "./keys/dev/dev.crt",
