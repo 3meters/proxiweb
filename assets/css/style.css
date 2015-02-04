@@ -44,12 +44,17 @@ a {
   float: left;
 }
 .pictureSm {
-  max-height: 100px;
-  max-width: 100px;
+  max-height: 150px;
+  max-width: 150px;
+  float: left;
+}
+.pictureMd {
+  max-height: 300px;
+  max-width: 300px;
   float: left;
 }
 .pictureLg {
-  max-height: 400px;
-  max-width: 400px;
+  max-height: 450px;
+  max-width: 450px;
   float: left;
 }

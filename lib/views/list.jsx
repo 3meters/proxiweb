@@ -41,26 +41,77 @@ var Rows = React.createClass({
     var outerClName = this.props.clName
 
     var rowMarkup = this.props.data.map(function(doc) {
-      var type = ""
+
       var clName = doc.collection || outerClName
       var detailsHref = "/" + clName + "/" + doc._id
-      var ownerHref = "/users/" + doc._owner
       var pictureUrl = utils.pictureUrl(doc.photo, 'sm')
+      var type = ""
       if (doc.category && doc.category.name) type = doc.category.name
+
+      var fieldsMarkup = function() {
+        switch(clName) {
+
+          case 'users':
+            return <div><a href={detailsHref}>{doc.name}</a></div>
+
+          case 'patches':
+            var lc = doc.linkCounts
+            var cWatching = 0
+            if (lc && lc.users && lc.users.from) cWatching = lc.users.from
+            var cMessages = 0
+            if (lc && lc.messages && lc.messages.from) cMessages = lc.messages.from
+            return (
+              <div>
+                <div><a href={detailsHref}>{doc.name}</a></div>
+                <div>{type}</div>
+                <div>{"Owner: "}<a href={"/users/" + doc._owner}>{doc.owner}</a></div>
+                <div>{"Visibility: " + doc.visibility}</div>
+                <div>{"Watching: "}
+                  <a href={detailsHref + "/watch/from/users"}>{cWatching}</a>
+                </div>
+                <div>{"Messages: "}
+                  <a href={detailsHref + "/content/from/messages"}>{cMessages}</a>
+                </div>
+              </div>
+            )
+
+          case 'messages':
+            var message = "Message"
+            if (doc.description) {
+              message = doc.description.slice(0,50)
+              if (doc.description.length > message.length) message+= "..."
+            }
+            return (
+              <div>
+                <div><a href={detailsHref}>{message}</a></div>
+                <div>{"From: "}<a href={"/users/" + doc._owner}>{doc.owner}</a></div>
+              </div>
+            )
+
+          case 'places':
+            return (
+              <div>
+                <div><a href={detailsHref}>{doc.name}</a></div>
+                <div>{type}</div>
+                <div>{doc.city + ", " + doc.region}</div>
+              </div>
+            )
+        }
+      }()
+
       return (
         <div className="row pad list" key={doc._id}>
           <div className="col1 text-right">
             <a href={detailsHref}><img src={pictureUrl} className="pictureSm" /></a>
           </div>
           <div className="col2">
-            <a href={detailsHref}>{doc.name}</a><br />
-            <a href={ownerHref}>{doc.owner}</a><br />
+            {fieldsMarkup}
           </div>
         </div>
       )
     })
 
-    return (<div>{rowMarkup}</div>)
+    return <div>{rowMarkup}</div>
   }
 })
 

@@ -26,8 +26,12 @@ function buildFields(clName, oldFields, mode, asAdmin) {
       description: true,
     },
     cls: {
-      users: {
-        bio: true,
+      messages: {
+        _root: true,
+        _replyTo: true,
+      },
+      patches: {
+        visibility: true,
       },
       places: {
         phone: true,
@@ -35,6 +39,9 @@ function buildFields(clName, oldFields, mode, asAdmin) {
         city: true,
         region: true,
         postalCode: true,
+      },
+      users: {
+        bio: true,
       },
     },
     after: {
