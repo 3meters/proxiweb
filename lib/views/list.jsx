@@ -47,19 +47,39 @@ var Rows = React.createClass({
       var pictureUrl = utils.pictureUrl(doc.photo, 'sm')
       var type = ""
       if (doc.category && doc.category.name) type = doc.category.name
+      var location = ""
+      if (doc.city) {
+        location = doc.city
+        if (doc.region) location += ", " + doc.region
+      }
 
       var fieldsMarkup = function() {
         switch(clName) {
 
           case 'users':
-            return <div><a href={detailsHref}>{doc.name}</a></div>
+            return (
+              <div>
+                <div><a href={detailsHref}>{doc.name}</a></div>
+                <div>{location}</div>
+                <div>{"Watching: "}
+                  <a href={detailsHref + "/watch/to/patches"}>
+                    {doc.linkedCount.to.patches}
+                  </a>
+                </div>
+                <div>{"Owns: "}
+                  <a href={detailsHref + "/create/to/patches"}>
+                    {doc.linkedCount.to.patches}
+                  </a>
+                </div>
+                <div>{"Likes: "}
+                  <a href={detailsHref + "/create/to/patches"}>
+                    {doc.linkedCount.to.patches}
+                  </a>
+                </div>
+              </div>
+            )
 
           case 'patches':
-            var lc = doc.linkCounts
-            var cWatching = 0
-            if (lc && lc.users && lc.users.from) cWatching = lc.users.from
-            var cMessages = 0
-            if (lc && lc.messages && lc.messages.from) cMessages = lc.messages.from
             return (
               <div>
                 <div><a href={detailsHref}>{doc.name}</a></div>
@@ -67,10 +87,14 @@ var Rows = React.createClass({
                 <div>{"Owner: "}<a href={"/users/" + doc._owner}>{doc.owner}</a></div>
                 <div>{"Visibility: " + doc.visibility}</div>
                 <div>{"Watching: "}
-                  <a href={detailsHref + "/watch/from/users"}>{cWatching}</a>
+                  <a href={detailsHref + "/watch/from/users"}>
+                    {doc.linkedCount.from.users}
+                  </a>
                 </div>
                 <div>{"Messages: "}
-                  <a href={detailsHref + "/content/from/messages"}>{cMessages}</a>
+                  <a href={detailsHref + "/content/from/messages"}>
+                    {doc.linkedCount.from.messages}
+                  </a>
                 </div>
               </div>
             )
@@ -93,7 +117,7 @@ var Rows = React.createClass({
               <div>
                 <div><a href={detailsHref}>{doc.name}</a></div>
                 <div>{type}</div>
-                <div>{doc.city + ", " + doc.region}</div>
+                <div>{location}</div>
               </div>
             )
         }
@@ -127,20 +151,8 @@ var List = React.createClass({
     var rows = []
 
     if (_.isArray(data)) rows = data
-    if (_.isPlainObject(data) && _.isArray(data.links)) {
-
-      // Invert the array of links with nested documents
-      // to and array of documents with nested links
-      rows = data.links.map(function(link) {
-        if (link.document) {
-          var linkClone = _.clone(link)
-          delete linkClone.document
-          link.document.collection = link.collection
-          link.document.link = linkClone
-          return link.document
-        }
-      })
-      delete data.links
+    if (_.isPlainObject(data) && _.isArray(data.linked)) {
+      rows = data.linked
       parent = data
     }
 
