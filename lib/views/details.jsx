@@ -186,7 +186,7 @@ var Fields = React.createClass({
       return (
         <div className="row" key={fieldName}>
           <div className="col1">
-            <p>{fields[fieldName].label}{":"}</p>
+            <p>{fields[fieldName].label + ":"}</p>
           </div>
           <div className="col2">
             <Field mode={mode} name={fieldName} value={data[fieldName]} fieldSpec={fields[fieldName]} />

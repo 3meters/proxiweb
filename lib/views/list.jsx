@@ -7,13 +7,13 @@ var React = require('react')
 var Layout = require('./layout')
 var utils = require('../utils')
 
+
 // Top
 var Top = React.createClass({
-
   render: function() {
-    var data = this.props.data
 
-    if (!data) return <div />
+    var data = this.props.data
+    if (!data) return <div/>
 
     var clName = this.props.clName
     var href = "/" + clName + "/" + data._id
@@ -22,13 +22,45 @@ var Top = React.createClass({
     return (
       <div>
         <div className="row">
-          <a href={href}><img src={pictureUrl} className="picture" /></a>
+          <a href={href}><img src={pictureUrl} className="picture"/></a>
         </div>
         <div className="row">
           <a href={href}>{data.name}</a>
         </div>
       </div>
     )
+  }
+})
+
+
+// Linked Document Counts
+var LinkedCount = React.createClass({
+  render: function() {
+
+    var lc = this.props.linkedCount
+    if (!lc) return <div/>
+
+    var href = this.props.href
+    var linkName
+    var linkLevel
+    var markup = []
+
+    for (var direction in lc) {
+      for (var clName in lc[direction]) {
+        for (var type in lc[direction][clName]) {
+          linkName = utils.getLinkTypeMapKey({direction: direction, type: type})
+          linkLabel = linkName[0].toUpperCase() + linkName.slice(1) + ":"
+          markup.push(
+            <div key={linkName + clName}>{linkLabel}
+              <a href={href + "/" + linkName + "/" + clName}>
+                {lc[direction][clName][type]}
+              </a>
+            </div>
+          )
+        }
+      }
+    }
+    return <div>{markup}</div>
   }
 })
 
@@ -61,21 +93,7 @@ var Rows = React.createClass({
               <div>
                 <div><a href={detailsHref}>{doc.name}</a></div>
                 <div>{location}</div>
-                <div>{"Watching: "}
-                  <a href={detailsHref + "/watch/to/patches"}>
-                    {doc.linkedCount.to.patches}
-                  </a>
-                </div>
-                <div>{"Owns: "}
-                  <a href={detailsHref + "/create/to/patches"}>
-                    {doc.linkedCount.to.patches}
-                  </a>
-                </div>
-                <div>{"Likes: "}
-                  <a href={detailsHref + "/create/to/patches"}>
-                    {doc.linkedCount.to.patches}
-                  </a>
-                </div>
+                <LinkedCount href={detailsHref} linkedCount={doc.linkedCount}/>
               </div>
             )
 
@@ -86,16 +104,7 @@ var Rows = React.createClass({
                 <div>{type}</div>
                 <div>{"Owner: "}<a href={"/users/" + doc._owner}>{doc.owner}</a></div>
                 <div>{"Visibility: " + doc.visibility}</div>
-                <div>{"Watching: "}
-                  <a href={detailsHref + "/watch/from/users"}>
-                    {doc.linkedCount.from.users}
-                  </a>
-                </div>
-                <div>{"Messages: "}
-                  <a href={detailsHref + "/content/from/messages"}>
-                    {doc.linkedCount.from.messages}
-                  </a>
-                </div>
+                <LinkedCount href={detailsHref} linkedCount={doc.linkedCount}/>
               </div>
             )
 
@@ -109,6 +118,7 @@ var Rows = React.createClass({
               <div>
                 <div><a href={detailsHref}>{message}</a></div>
                 <div>{"From: "}<a href={"/users/" + doc._owner}>{doc.owner}</a></div>
+                <LinkedCount href={detailsHref} linkedCount={doc.linkedCount}/>
               </div>
             )
 
@@ -118,6 +128,7 @@ var Rows = React.createClass({
                 <div><a href={detailsHref}>{doc.name}</a></div>
                 <div>{type}</div>
                 <div>{location}</div>
+                <LinkedCount href={detailsHref} linkedCount={doc.linkedCount}/>
               </div>
             )
         }
