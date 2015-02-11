@@ -13,7 +13,7 @@ var utils = require('../utils')
 // UI.  If blacklist value is true, always remove them.
 // If it is an object, removed them in the modes specified
 // but display them in the modes not specified
-function buildFields(clName, oldFields, mode, asAdmin) {
+function buildFields(cl, oldFields, mode, asAdmin) {
 
   var fields = {}
 
@@ -63,9 +63,9 @@ function buildFields(clName, oldFields, mode, asAdmin) {
     add(fieldName, whitelist.before[fieldName])
   }
   // Collection-specific fields
-  if (whitelist.cls[clName]) {
-    for (fieldName in whitelist.cls[clName]) {
-      add(fieldName, whitelist.cls[clName][fieldName])
+  if (whitelist.cls[cl]) {
+    for (fieldName in whitelist.cls[cl]) {
+      add(fieldName, whitelist.cls[cl][fieldName])
     }
   }
   // Ending common fields
@@ -126,14 +126,14 @@ function buildDisplayProperties(fields) {
 var Frame = React.createClass({
   render: function() {
     var mode = this.props.mode
-    var clName = this.props.clName
+    var cl = this.props.cl
     var data = this.props.data || {}
     var children = this.props.children
 
     switch (mode) {
       case 'view':   return <div>{children}</div>
-      case 'create': return <form method="post" action={"/" + clName}>{children}</form>
-      case 'edit':   return <form method="post" action={"/" + clName + "/" + data._id}>{children}</form>
+      case 'create': return <form method="post" action={"/" + cl}>{children}</form>
+      case 'edit':   return <form method="post" action={"/" + cl + "/" + data._id}>{children}</form>
     }
   }
 })
@@ -176,7 +176,7 @@ var Fields = React.createClass({
 
   render: function() {
 
-    var clName = this.props.clName
+    var cl = this.props.cl
     var fields = this.props.fields
     var user = this.props.user
     var mode = this.props.mode
@@ -211,10 +211,10 @@ var Actions = React.createClass({
   render: function() {
 
     var mode = this.props.mode
-    var clName = this.props.clName
+    var cl = this.props.cl
     var data = this.props.data || {}
     var canEdit = this.props.canEdit
-    var hrefDoc = "/" + clName + "/" + data._id
+    var hrefDoc = "/" + cl + "/" + data._id
 
     var actionMarkup = function() {
       switch (mode) {
@@ -255,7 +255,7 @@ var Details = React.createClass({
     var mode = this.props.mode  // 'view', 'edit', 'create'
     var user = this.props.user
     var title = this.props.title
-    var clName = this.props.clName
+    var cl = this.props.cl
     var canEdit = this.props.canEdit
     var schema = this.props.schema
     var fields = {}
@@ -265,16 +265,16 @@ var Details = React.createClass({
     if (asAdmin) fields = _.cloneDeep(schema.fields)
 
     // Build the display field list
-    fields = buildFields(clName, fields, mode, asAdmin)
+    fields = buildFields(cl, fields, mode, asAdmin)
 
     // Set field display properties
     fields = buildDisplayProperties(fields, mode)
 
     return (
       <Layout user={user} title={title}>
-        <Frame mode={mode} clName={clName} data={data}>
-          <Fields mode={mode} fields={fields} clName={clName} user={user} data={data} />
-          <Actions mode={mode} clName={clName} data={data} canEdit={canEdit}/>
+        <Frame mode={mode} cl={cl} data={data}>
+          <Fields mode={mode} fields={fields} cl={cl} user={user} data={data} />
+          <Actions mode={mode} cl={cl} data={data} canEdit={canEdit}/>
         </Frame>
       </Layout>
     )
