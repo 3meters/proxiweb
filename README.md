@@ -1,2 +1,2 @@
-# Patchrweb
-Patchr interactive web site
+# Proxiweb
+Sample Web UI over Proxibase Web Service

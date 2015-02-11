@@ -4,3 +4,4 @@ node_modules
 .monitor
 .DS_Store
 *.log
+logs
