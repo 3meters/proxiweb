@@ -213,22 +213,26 @@ var Actions = React.createClass({
     var mode = this.props.mode
     var clName = this.props.clName
     var data = this.props.data || {}
+    var canEdit = this.props.canEdit
     var hrefDoc = "/" + clName + "/" + data._id
 
     var actionMarkup = function() {
       switch (mode) {
-        case 'view': return (
-          <div>
-            <a className="btn btn-default" href={hrefDoc + "/edit"}>Edit</a>
-            <a className="btn btn-default" href={hrefDoc + "/delete"}>Delete</a>
-          </div>
-        )
+        case 'view':
+          if (!canEdit) return <div/>
+          return (
+            <div>
+              <a className="btn btn-default" href={hrefDoc + "/edit"}>Edit</a>
+              <a className="btn btn-default" href={hrefDoc + "/delete"}>Delete</a>
+            </div>
+          )
         case 'create':
-        case 'edit':  return (
-          <div>
-            <input className="btn btn-default" type="submit" value="Save" />
-          </div>
-        )
+        case 'edit':
+            return (
+            <div>
+              <input className="btn btn-default" type="submit" value="Save" />
+            </div>
+          )
       }
     }()
 
@@ -252,6 +256,7 @@ var Details = React.createClass({
     var user = this.props.user
     var title = this.props.title
     var clName = this.props.clName
+    var canEdit = this.props.canEdit
     var schema = this.props.schema
     var fields = {}
 
@@ -269,7 +274,7 @@ var Details = React.createClass({
       <Layout user={user} title={title}>
         <Frame mode={mode} clName={clName} data={data}>
           <Fields mode={mode} fields={fields} clName={clName} user={user} data={data} />
-          <Actions mode={mode} clName={clName} data={data} />
+          <Actions mode={mode} clName={clName} data={data} canEdit={canEdit}/>
         </Frame>
       </Layout>
     )

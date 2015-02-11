@@ -150,6 +150,19 @@ var Rows = React.createClass({
   }
 })
 
+var ActionBar = React.createClass({
+
+  render: function() {
+
+    var createName = this.props.createName
+    var href = this.props.path + "/create"
+    return (
+      <div>
+        <a className="btn btn-default" href={href}>New {createName}</a>
+      </div>
+    )
+  }
+})
 
 var List = React.createClass({
 
@@ -158,19 +171,34 @@ var List = React.createClass({
     var title = this.props.title
     var user = this.props.user
     var data = this.props.data
+    var clName = this.props.clName
+    var schema = this.props.schema
+    var linkName = this.props.linkName
+    var linkedClName = this.props.linkedClName
+    var linkedSchema = this.props.linkedSchema
+    var path = this.props.path
+    var createName = ''
     var parent = null
     var rows = []
 
-    if (_.isArray(data)) rows = data
-    if (_.isPlainObject(data) && _.isArray(data.linked)) {
-      rows = data.linked
+    if (linkedClName) {
+      // Rows will be displayed as children
+      rows = data.linked  // data is a document with linked children
       parent = data
+      createName = linkedSchema.name
+    }
+    else {
+      // Rows will be at the top level
+      rows = data  // data is an array
+      createName = clSchema.name
     }
 
     return (
       <Layout title={title} user={user}>
-         <Top data={parent} clName={this.props.clName} />
-         <Rows data={rows} clName={this.props.clName} />
+         <Top data={parent} clName={clName}/>
+         <ActionBar path={path} createName={createName}/>
+         <Rows data={rows} clName={clName}/>
+         <ActionBar path={path} createName={createName}/>
       </Layout>
     )
   }
