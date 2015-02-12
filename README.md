@@ -1,2 +1,2 @@
 # Proxiweb
-Sample Web UI over Proxibase Web Service
+Exploratory Web UI over Proxibase Web Service
