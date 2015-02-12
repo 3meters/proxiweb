@@ -172,9 +172,6 @@ var List = React.createClass({
 
     p.actionBar = function() {
       if (!p.link) return null
-      debug({cl: p.cl})
-      debug({cls_linkCl: cls[p.linkCl]})
-      debug({link:p.link})
       if (cls[p.linkCl] &&
           cls[p.linkCl].create &&
           cls[p.linkCl].create[p.cl] === p.link) {
