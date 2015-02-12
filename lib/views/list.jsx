@@ -49,9 +49,9 @@ var LinkedCount = React.createClass({
       for (var cl in lc[direction]) {
         for (var type in lc[direction][cl]) {
           var link = utils.linksKeyByValue({direction: direction, type: type})
-          var linkLabel = links[link].label || link[0].toUpperCase() + link.slice(1) + ": "
+          var linkLabel = links[link].label || link[0].toUpperCase() + link.slice(1)
           markup.push(
-            <div key={link + cl}>{linkLabel}
+            <div key={link + cl}>{linkLabel + ": "}
               <a href={href + "/" + link + "/" + cl}>
                 {lc[direction][cl][type]}
               </a>
@@ -155,40 +155,45 @@ var List = React.createClass({
 
   render: function() {
 
-    var title = this.props.title
-    var user = this.props.user
-    var data = this.props.data
-    var cl = this.props.cl
-    var schema = this.props.schema
-    var link = this.props.link
-    var linkCl = this.props.linkCl
-    var linkSchema = this.props.linkSchema
-    var path = this.props.path
-    var createName = ''
-    var parent = null
-    var rows = []
+    var p = this.props
+    // debugKeys(p)
 
-    if (linkCl) {
+    if (p.linkCl) {
       // Rows will be displayed as children
-      rows = data.linked  // data is a document with linked children
-      parent = data
-      createName = linkSchema.name
+      p.rows = p.data.linked  // data is a document with linked children
+      p.parent = p.data
+      p.createName = p.linkSchema.name
     }
     else {
       // Rows will be at the top level
-      rows = data  // data is an array
-      createName = schema.name
+      p.rows = p.data  // data is an array
+      p.createName = p.schema.name
     }
 
-    var actionBar = function() {
-      return null
-    }()
+    p.actionBar = function() {
+      if (!p.link) return null
+      debug({cl: p.cl})
+      debug({cls_linkCl: cls[p.linkCl]})
+      debug({link:p.link})
+      if (cls[p.linkCl] &&
+          cls[p.linkCl].create &&
+          cls[p.linkCl].create[p.cl] === p.link) {
+        var href = p.path + "/create" + "?prev=" + p.path
+        var label = "Create " + p.linkSchema.name
+        return (
+          <div>
+            <a href={href} className={"btn btn-default"}>{label}</a>
+          </div>
+        )
+      }
+      else return null
+    }() // immediate
 
     return (
-      <Layout title={title} user={user}>
-        <Top data={parent} cl={cl}/>
-        <div>{actionBar}</div>
-        <Rows data={rows} cl={cl}/>
+      <Layout title={p.title} user={p.user}>
+        <Top data={p.parent} cl={p.cl}/>
+        {p.actionBar}
+        <Rows data={p.rows} cl={p.cl}/>
       </Layout>
     )
   }

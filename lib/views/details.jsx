@@ -129,11 +129,12 @@ var Frame = React.createClass({
     var cl = this.props.cl
     var data = this.props.data || {}
     var children = this.props.children
+    var actionPath = this.props.actionPath
 
     switch (mode) {
       case 'view':   return <div>{children}</div>
-      case 'create': return <form method="post" action={"/" + cl}>{children}</form>
-      case 'edit':   return <form method="post" action={"/" + cl + "/" + data._id}>{children}</form>
+      case 'create': return <form method="post" action={actionPath}>{children}</form>
+      case 'edit':   return <form method="post" action={actionPath}>{children}</form>
     }
   }
 })
@@ -251,30 +252,32 @@ var Details = React.createClass({
 
   render: function() {
 
-    var data = this.props.data
-    var mode = this.props.mode  // 'view', 'edit', 'create'
-    var user = this.props.user
-    var title = this.props.title
-    var cl = this.props.cl
-    var canEdit = this.props.canEdit
-    var schema = this.props.schema
-    var fields = {}
+    var p = this.props
 
-    var asAdmin = (user && user.role === 'admin')
+    // Create and Edit post to their parent url
+    p.actionPath = p.path.split("/").slice(0,-1).join("/")
 
-    if (asAdmin) fields = _.cloneDeep(schema.fields)
+    // Past through the redirect param to the post action
+    if (p.prev) p.actionPath += '?prev=' + p.prev
+
+    // Compute the fields
+    p.asAdmin = (p.user && p.user.role === 'admin')
+    p.fields = {}
+    if (p.asAdmin) p.fields = _.cloneDeep(p.schema.fields)
 
     // Build the display field list
-    fields = buildFields(cl, fields, mode, asAdmin)
+    p.fields = buildFields(p.cl, p.fields, p.mode, p.asAdmin)
 
     // Set field display properties
-    fields = buildDisplayProperties(fields, mode)
+    p.fields = buildDisplayProperties(p.fields, p.mode)
+
+    // debugKeys(p)
 
     return (
-      <Layout user={user} title={title}>
-        <Frame mode={mode} cl={cl} data={data}>
-          <Fields mode={mode} fields={fields} cl={cl} user={user} data={data} />
-          <Actions mode={mode} cl={cl} data={data} canEdit={canEdit}/>
+      <Layout user={p.user} title={p.title}>
+        <Frame mode={p.mode} cl={p.cl} data={p.data} actionPath={p.actionPath}>
+          <Fields mode={p.mode} fields={p.fields} cl={p.cl} user={p.user} data={p.data}/>
+          <Actions mode={p.mode} cl={p.cl} data={p.data} canEdit={p.canEdit}/>
         </Frame>
       </Layout>
     )
