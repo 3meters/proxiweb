@@ -1,0 +1,16 @@
+
+// Proxiweb config file
+
+module.exports = {
+  serviceUri: "https://api.aircandi.com:8443/v1",  // staging server, ok to write to
+  name: "Proxiweb",
+  mode: "development",
+  protocol: "https",
+  host: "localhost",
+  port: 9443,
+  ssl: {
+    keyFilePath: "./keys/dev/dev.pem",
+    certFilePath: "./keys/dev/dev.crt",
+    caFilePath: null,
+  },
+}

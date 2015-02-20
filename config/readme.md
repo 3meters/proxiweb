@@ -1,7 +1,9 @@
-Copy config.template.json to config.json
+Copy config.js.template to config.js
 
-Edit config.json to suit your config
+Edit config.js to suit your configuration.  If pointing to the
+staging service over the internet, you don't need to to change
+anything.
 
-config.template.json is shared by git
+config.js.template is shared by git.
 
-config.json is installation-specific, and ignored by git
+config.js is installation-specific, and ignored by git.
